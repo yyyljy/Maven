@@ -91,9 +91,29 @@
 [[기능 추가하기]]
 
 0. 새로운 테이블로 작업을 한다면 mybatis-config.xml파일에 VO파일과 mapper파일 등록
+
 1. mapper에 sql문 추가
+
 2. DAOImpl클래스에 메소드 추가
+
 3. ServiceImpl클래스에서 dao의 메소드 호출할 수 있도록 메소드 정의
+
 4. Controller에서 ServiceImpl의 메소드를 호출해서 작업할 수 있도록 정의
+
 5. Controller에서 response하는 뷰에서 Controller에서 공유해준 데이터를 꺼내서 출력하기(select작업)
+
 6. tiles설정 파일에서 뷰 등록
+
+   (SQL하나당 메소드 한개!)
+
+   ```java
+   @Override
+   	public List<BoardVO> categorySearch(String category) {
+   		List<BoardVO> list = sqlSession.selectList("categorySearch", category);
+   		System.out.println(list);
+   		return list;
+   	}
+   ```
+
+   `"categorySearch"` = mapper에서 지정한 이름(id)
+

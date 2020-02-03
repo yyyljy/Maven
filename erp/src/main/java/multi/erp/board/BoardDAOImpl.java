@@ -1,6 +1,8 @@
 package multi.erp.board;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +25,20 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 
 	@Override
-	public List<BoardVO> searchList(String search) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<BoardVO> categorySearch(String category) {
+		List<BoardVO> list = sqlSession.selectList("multi.erp.board.categorySearch", category);
+		System.out.println(list);
+		return list;
 	}
-
+	
+	//검색어별로 조회 - 동적SQL활용
 	@Override
 	public List<BoardVO> searchList(String tag, String search) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("searchList");
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("tag", tag);
+		map.put("search", search);
+		return sqlSession.selectList("multi.erp.board.dynamicSearch", map);
 	}
 
 	@Override
