@@ -1,11 +1,13 @@
 package multi.erp.board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -56,5 +58,16 @@ public class BoardController {
 	@RequestMapping("/menu/board.do")
 	public String board() {
 		return "menu/board";
+	}
+	
+	//Ajax로 카테고리별 게시판 데이터를 요청하는 메소드
+	//=>컨트롤러 메소드처럼 modelandview를 리턴하지 않고
+	// 일반메소드처럼 조회한 데이터를 arraylist로 리턴하면 jackson라이브러리가
+	// 자동으로 arraylist<boardvo>를 json으로 변환해서 리턴해준다.
+	@RequestMapping(value="/board/ajax_boardlist.do", method=RequestMethod.GET, produces="application/json;charset=utf-8")
+	public @ResponseBody ArrayList<BoardVO> categoryList(String category) {
+		ArrayList<BoardVO> boardlist = (ArrayList<BoardVO>)service.boardList(category);
+		System.out.println("ajax통신 : "+boardlist.size());
+		return boardlist;
 	}
 }
